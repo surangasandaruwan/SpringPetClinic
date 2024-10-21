@@ -10,21 +10,21 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.1.1.RELEASE</version>
+    <version>3.0.0</version>
   </parent>
   <name>petclinic</name>
 
   <properties>
 
     <!-- Generic properties -->
-    <java.version>1.8</java.version>
+    <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- Web dependencies -->
-    <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
-    <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
-    <webjars-jquery.version>2.2.4</webjars-jquery.version>
+    <webjars-bootstrap.version>5.2.0</webjars-bootstrap.version>
+    <webjars-jquery-ui.version>1.12.1</webjars-jquery-ui.version>
+    <webjars-jquery.version>3.6.0</webjars-jquery.version>
     <wro4j.version>1.8.0</wro4j.version>
 
     <jacoco.version>0.8.2</jacoco.version>
@@ -56,6 +56,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <version>3.0.0</version>
       <scope>test</scope>
     </dependency>
 

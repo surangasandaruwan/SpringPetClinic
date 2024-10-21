@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -9,29 +10,29 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.0</version> <!-- Latest Spring Boot version -->
-    <relativePath/> <!-- Use this to avoid warnings -->
+    <version>3.2.0</version> <!-- Updated to latest Spring Boot version -->
   </parent>
   <name>petclinic</name>
 
   <properties>
-    <!-- Updated to latest stable versions -->
-    <java.version>17</java.version> <!-- Java 17 is the latest LTS -->
+
+    <!-- Generic properties -->
+    <java.version>17</java.version> <!-- Updated to Java 17, latest LTS -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    
-    <!-- Web dependencies -->
-    <webjars-bootstrap.version>5.3.0</webjars-bootstrap.version> <!-- Latest Bootstrap -->
-    <webjars-jquery-ui.version>1.12.1</webjars-jquery-ui.version> <!-- Latest jQuery UI -->
-    <webjars-jquery.version>3.6.0</webjars-jquery.version> <!-- Latest jQuery -->
-    <wro4j.version>1.10.2</wro4j.version> <!-- Latest wro4j version -->
 
-    <jacoco.version>0.8.10</jacoco.version> <!-- Latest Jacoco version -->
-    <mockito.version>5.6.0</mockito.version> <!-- Latest Mockito version -->
+    <!-- Web dependencies -->
+    <webjars-bootstrap.version>5.3.2</webjars-bootstrap.version> <!-- Updated to latest Bootstrap -->
+    <webjars-jquery-ui.version>1.13.2</webjars-jquery-ui.version> <!-- Updated -->
+    <webjars-jquery.version>3.7.0</webjars-jquery.version> <!-- Updated -->
+    <wro4j.version>1.12.0</wro4j.version> <!-- Updated -->
+
+    <jacoco.version>0.8.10</jacoco.version> <!-- Updated -->
+
   </properties>
 
   <dependencies>
-    <!-- Spring Boot dependencies -->
+    <!-- Spring and Spring Boot dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -58,21 +59,19 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Database dependencies -->
+    <!-- Databases - Uses HSQL by default -->
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <scope>runtime</scope>
-      <version>2.7.2</version> <!-- Latest HSQLDB version -->
     </dependency>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
       <scope>runtime</scope>
-      <version>8.0.34</version> <!-- Latest MySQL Connector -->
     </dependency>
 
-    <!-- Caching dependencies -->
+    <!-- caching -->
     <dependency>
       <groupId>javax.cache</groupId>
       <artifactId>cache-api</artifactId>
@@ -80,10 +79,9 @@
     <dependency>
       <groupId>org.ehcache</groupId>
       <artifactId>ehcache</artifactId>
-      <version>3.10.8</version> <!-- Latest Ehcache version -->
     </dependency>
 
-    <!-- WebJars -->
+    <!-- webjars -->
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator-core</artifactId>
@@ -103,6 +101,7 @@
       <artifactId>bootstrap</artifactId>
       <version>${webjars-bootstrap.version}</version>
     </dependency>
+    <!-- end of webjars -->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -118,14 +117,22 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
+            <!-- Spring Boot Actuator displays build-related information
+              if a META-INF/build-info.properties file is present -->
             <goals>
               <goal>build-info</goal>
             </goals>
+            <configuration>
+              <additionalProperties>
+                <encoding.source>${project.build.sourceEncoding}</encoding.source>
+                <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
+                <java.source>${maven.compiler.source}</java.source>
+                <java.target>${maven.compiler.target}</java.target>
+              </additionalProperties>
+            </configuration>
           </execution>
         </executions>
       </plugin>
-
-      <!-- Updated Jacoco plugin -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -146,11 +153,12 @@
         </executions>
       </plugin>
 
-      <!-- Git commit ID plugin updated -->
+      <!-- Spring Boot Actuator displays build-related information if a git.properties
+        file is present at the classpath -->
       <plugin>
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
-        <version>4.0.2</version> <!-- Latest version -->
+        <version>4.0.0</version> <!-- Updated -->
         <executions>
           <execution>
             <goals>
@@ -158,9 +166,16 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <verbose>true</verbose>
+          <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+          <generateGitPropertiesFile>true</generateGitPropertiesFile>
+          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+          </generateGitPropertiesFilename>
+          <failOnNoGitDirectory>false</failOnNoGitDirectory>
+        </configuration>
       </plugin>
 
-      <!-- Updated WRO4J plugin -->
       <plugin>
         <groupId>ro.isdc.wro4j</groupId>
         <artifactId>wro4j-maven-plugin</artifactId>
@@ -173,11 +188,30 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+          <cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>
+          <wroFile>${basedir}/src/main/wro/wro.xml</wroFile>
+          <extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
+          <contextFolder>${basedir}/src/main/less</contextFolder>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${webjars-bootstrap.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.6.0</version> <!-- Updated -->
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
 
-  <!-- Apache 2 License -->
+  <!-- Apache 2 license -->
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
